@@ -67,5 +67,15 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
    * typeof(undefined) === 'undefined'  
    *  typeof(0) === 'number'  
    *  typeof('0') === 'string'  
+### 原型：
+  * 每个对象都有 __proto__ 属性，但只有函数对象才有 prototype 属性
+  * 其中每个函数对象都有一个prototype 属性，这个属性指向函数的原型对象
+  *  实例的构造函数指向构造函数：
+    person1.constructor == Person
+   Person.prototype.constructor == Person
+  * 为什么person1 有constructor 属性 那是因为person1 是Person 的实例；那么Person.prototype 为什么会有constructor 的属性 也是Person 的实例。
+也就是在 Person 创建的时候，创建了一个它的实例对象并赋值给它的 prototype，基本过程如下： 
+> 结论：原型对象（Person.prototype）是 构造函数（Person）的一个实例。
+* 上文提到凡是通过 new Function( ) 产生的对象都是函数对象。因为 A 是函数对象，所以Function.prototype 是函数对象。
 
  
