@@ -58,5 +58,14 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
    * every()  判断数组中每一项都是否满足条件，只有所有项都满足条件，才会返回true。
    * reduce()
    > 这两个方法都会实现迭代数组的所有项，然后构建一个最终返回的值;传给 reduce()和 reduceRight()的函数接收 4 个参数：前一个值、当前值、项的索引和数组对象。这个函数返回的任何值都会作为第一个参数自动传给下一项。
+  ### 一切都是对象：
+   * 
+   * //注意：typeof不能够区分对象和数组  
+   *  typeof({}) === 'object'  
+   *  typeof([]) === 'object'  
+   * typeof(null) === 'object'  
+   * typeof(undefined) === 'undefined'  
+   *  typeof(0) === 'number'  
+   *  typeof('0') === 'string'  
 
  
