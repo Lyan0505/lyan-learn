@@ -2,8 +2,9 @@
 前端开发 一些基础 零碎的笔记
 ## 整理的笔记：
 ### map forEach 区别？
-  * map 的回调函数中支持return 不影响原来的数组，相当于clone 一份；
-  * forEach 按照顺序一个一个来具体怎么操作无所谓；forEach(当前项，当前位置，原始数组) forEach 方法中的this 是arr 回调函数中的this 默认是window
+  * map 的回调函数中支持return 不影响原来的数组，相当于clone 一份；
+  * forEach 按照顺序一个一个来具体怎么操作无所谓；forEach(当前项，当前位置，原始数组) forEach 方法中的this 是arr 回调函数中的this 默认是window
+ 
 ### defer和async的区别？
   * 没有defer和async的时候，立即加载并执行指定的脚本
   * 相同：两者都是异步的；不同的是：它俩的差别在于脚本下载完之后何时执行
@@ -13,5 +14,3 @@
   * defer属性，加载后续文档的过程和js脚本的加载(此时仅加载不执行)是并行进行的(异步)，js脚本的执行需要等到文档所有元素解析完成之后，DOMContentLoaded事件触发执行之前。
 
 ### 
- 
-
