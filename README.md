@@ -78,4 +78,126 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
 > 结论：原型对象（Person.prototype）是 构造函数（Person）的一个实例。
 * 上文提到凡是通过 new Function( ) 产生的对象都是函数对象。因为 A 是函数对象，所以Function.prototype 是函数对象。
 
+ ##### 为什么要用事件委托呢？
+   * 我自身刚开始的理解就是，当目标的dom 元素没有渲染出来的时候绑定事件是没有作用的，就先把事件绑定外层的父元素上，然后分给目标元素上（理解错误，其实是为外层父元素绑定事件，触发目标元素的时候冒泡到外层 触发绑定的事件）
+   * 那么为什么要使用事件委托呢？有什么好处呢？加入有100li每个li 都有相同的click 事件，我们最笨的方法就是for循环来遍历所有的li 然后添加事件；这样会有什么影响呢？
+      * 添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能，因为需要不断的与dom节点进行交互，访问dom的次数越多，引起浏览器重绘与重排的次数也就越多，就会延长整个页面的交互就绪时间 ；Dom 操作次数越多就会影响性能；除此之外每一个函数都是一个对象，每一个对象都是会占内存的，内存占用越大性能自然就是越差的；
+      
+      >window.onload = function(){
+            var oUl = document.getElementById("ul1");
+            var aLi = oUl.getElementsByTagName('li');
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].onclick = function(){
+                    alert(123);
+                }
+            }
+        }
+
+
+      > window.onload = function(){
+            var oUl = document.getElementById("ul1");
+        oUl.onclick = function(){
+                alert(123);
+            }
+        } 
+     * 这个是事件委托利用冒泡原理；，如果我想让事件代理的效果跟直接给节点的事件效果一样怎么办，比如说只有点击li才会触发，
+
+    
+
+
+      <div id="wrap" class='wrap'>
+        <ul>
+            <li><div style="width:100px;height:100px;background-color:#000">
+                <p class="ds" style="color:#fff">dsadadsad</p>
+            </div></li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+        <p class="aa">dsdsad</p>
+    </div>
+    <div id="wrap" class='wrap'>
+        <ul>
+            <li>dsa</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+       
+    </div>
+
+     js:
+     var on = function (type,target,parent,callback){
+         if(!target || !type || !callback){
+             return false;
+         }
+         if(typeof type!=="string"){
+             return false;
+         }
+         if(typeof callback !=='function'){
+             return false
+         }
+         if(typeof(parent)!=='string'){
+             return
+         }
+         //最后的优化
+         var _callback2=function(ev){
+            var _target=ev.target||ev.srcElement;
+            if(_target.nodeName.toLowerCase() == target){
+                callback&&callback.call(_target,ev);
+            }else{
+                if(ev.currentTarget.hasChildNodes(_target)){
+                    callback&&callback.call(_target,ev);
+                }
+            }
+         }
+         //除此写的时候，不知道怎么下手
+        var _callback  = function(ev){
+            var ev=ev||window.event;
+            var _target=ev.target||ev.srcElement;
+            var _parese=ev.currentTarget.querySelectorAll(target);
+     
+            for(var i=0;i<_parese.length;i++){
+                if(_parese[i]===_target){
+                    callback&&callback.call(_target,ev);
+                   
+                }
+                 //绑定目标时间的child
+                 if(_parese[i].contains(_target)&&_parese[i]!==_target){
+                     
+                        callback&&callback.call(_target,ev);
+                    }
+                
+            }       
+        }
+
+            var parentlist=document.querySelectorAll(parent);      
+         for(var i=0;i<parentlist.length;i++){   
+            var targetlist=parentlist[i].querySelectorAll(target);   
+            parentlist[i].addEventListener(type,_callback2);
+         } 
+        
+          
+     }
+
+     
+     on('click','li','.wrap',function(ev){
+         console.log(this);
+         
+      })
+      // 鼠标事件没有成功 查找原因中。。。
+     on('mouseover','li','.wrap',function(){
+         console.log(this);
+         alert(true);
+     })
+
+
+
+* 我们可以发现，当用事件委托的时候，根本就不需要去遍历元素的子节点，只需要给父级元素添加事件就好了，其他的都是在js里面的执行，这样可以大大的减少dom操作，这才是事件委托的精髓所在。
+* 适合用事件委托的事件：click，mousedown，mouseup，keydown，keyup，keypress。
+* mouseover和mouseout虽然也有事件冒泡，但是处理它们的时候需要特别的注意，因为需要经常计算它们的位置，处理起来不太容易。
+不适合的就有很多了，举个例子，mousemove，每次都要计算它的位置，非常不好把控，在不如说focus，blur之类的，本身就没用冒泡的特性，自然就不能用事件委托了
+
+
+
  
