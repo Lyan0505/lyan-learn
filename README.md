@@ -58,7 +58,8 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
    * every()  判断数组中每一项都是否满足条件，只有所有项都满足条件，才会返回true。
    * reduce()
    > 这两个方法都会实现迭代数组的所有项，然后构建一个最终返回的值;传给 reduce()和 reduceRight()的函数接收 4 个参数：前一个值、当前值、项的索引和数组对象。这个函数返回的任何值都会作为第一个参数自动传给下一项。
-  ### 一切都是对象：
+
+   ### 一切都是对象：
    * 
    * //注意：typeof不能够区分对象和数组  
    *  typeof({}) === 'object'  
@@ -67,16 +68,6 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
    * typeof(undefined) === 'undefined'  
    *  typeof(0) === 'number'  
    *  typeof('0') === 'string'  
-### 原型：
-  * 每个对象都有 __proto__ 属性，但只有函数对象才有 prototype 属性
-  * 其中每个函数对象都有一个prototype 属性，这个属性指向函数的原型对象
-  *  实例的构造函数指向构造函数：
-    person1.constructor == Person
-   Person.prototype.constructor == Person
-  * 为什么person1 有constructor 属性 那是因为person1 是Person 的实例；那么Person.prototype 为什么会有constructor 的属性 也是Person 的实例。
-也就是在 Person 创建的时候，创建了一个它的实例对象并赋值给它的 prototype，基本过程如下： 
-> 结论：原型对象（Person.prototype）是 构造函数（Person）的一个实例。
-* 上文提到凡是通过 new Function( ) 产生的对象都是函数对象。因为 A 是函数对象，所以Function.prototype 是函数对象。
 ### 事件冒泡 事件捕获 事件委托：
    > 事件委托的原理就是事件的冒泡原理来实现的，何为事件冒泡呢？就是事件从最深的节点开始；事件流主要分为冒泡型事件和捕获型事件。IE浏览器目前只支持冒泡型事件，而支持标准DOM的浏览器比如火狐、Chrome等两者都支持
 
@@ -106,7 +97,7 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
 
     
 
-
+```
       <div id="wrap" class='wrap'>
         <ul>
             <li><div style="width:100px;height:100px;background-color:#000">
@@ -128,6 +119,8 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
        
     </div>
 
+```
+```
      js:
      var on = function (type,target,parent,callback){
          if(!target || !type || !callback){
@@ -193,7 +186,7 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
          alert(true);
      })
 
-
+```
 
 * 我们可以发现，当用事件委托的时候，根本就不需要去遍历元素的子节点，只需要给父级元素添加事件就好了，其他的都是在js里面的执行，这样可以大大的减少dom操作，这才是事件委托的精髓所在。
 * 适合用事件委托的事件：click，mousedown，mouseup，keydown，keyup，keypress。
@@ -201,5 +194,220 @@ Dom Load是在整个document文档（包括了加载图片等其他信息）加�
 不适合的就有很多了，举个例子，mousemove，每次都要计算它的位置，非常不好把控，在不如说focus，blur之类的，本身就没用冒泡的特性，自然就不能用事件委托了
 
 
+
+### jq 选择器的实现：
+ 
+ #### 如何用原生js 实现jq 选择器的：
+ ###### js 常用的选择器：
+  * getElementById 这是最常用的选择器，通过id来定位：
+  *  getElementsByName  通过名称name选取元素 返回值是一个nodeList集合
+  * getElementsByTagName 通过标签名选取元素
+  * getElementsByClassName className
+  
+  * querySelector
+  * querySelectorAll
+  * querySelector 和 querySelectorAll 方法是 W3C Selectors API 规范中定义的。他们的作用是根据 CSS 选择器规范，便捷定位文档中指定元素。两者不同的是querySelector返回的是一个匹配对象，querySelectorAll返回的一个集合(objNodeList )。
+
+
+ ```
+ document.getElementById("test");  我们也可以用
+
+   document.querySelector("#test");
+   document.querySelectorAll("#test")[0];
+
+  ```
+
+ 
+ * 获取文档中 class=”example” 的第一个 \<p> 元素: document.querySelector("p.example");
+ * 获取文档中有 “target” 属性的第一个 \<a> 元素：document.querySelector("a[target]");
+
+
+  ```
+  var $=function(str){
+
+    //判断参数是一个还是多个
+    var ismoreOne=/\b /.test(str);
+    //如果是多个的时候：
+    debugger
+    if(ismoreOne){
+        
+        var rules = [];
+		   rules = str.split(" ");
+           var parentNodeList=[];
+          parentNodeList.push($(rules[0]));
+
+        for (var i=1;i<rules.length;i++){
+            var temp=[];
+            var tempObj={};
+            for (var c in parentNodeList) {
+                debugger
+                switch(rules[i].charAt(0))
+                {
+                    case "#":
+                       name=rules[i].replace(/^#/,"");
+                        var parentNode=document.getElementById(name);
+                        return parentNode;
+                    break;
+                    case ".":
+                       name=rules[i].replace(/^./,"");
+                        var parentNode=document.getElementsByClassName(name);
+                        return parentNode;
+
+                }
+            }
+        }
+    }else{
+        var slector;
+        debugger
+        switch (str.charAt(0)){
+            case '#':
+                slector=str.replace(/^#/,'');
+                return document.getElementById(slector);
+                break;
+            case ".":
+                 slector=str.replace(/^./,'');
+                 return document.getElementsByClassName(slector);
+
+            case "[":
+            //判断是否有[]
+
+            if(new RegExp("^\\[\\w*=?\\w*\\]$").test(str)){
+
+
+            }else{
+                return null
+            }
+        }
+    }
+  }
+
+ console.log($('.wrap'));
+ ```
+
+
+ #### 如何用原生js addClass removeClass：
+
+```
+function addClass(obj,className){
+    if(obj.length){
+        for(var i=0;i<obj.length;i++){
+            if(!this.hasClass(obj[i],className)){
+                obj[i].className+=" " +className;
+            }
+        }
+
+    }else{
+        if(!this.hasClass(obj,className)){
+        obj.className+=" " +className;
+    }
+    }
+   
+}
+
+
+function hasClass(obj,className){
+    if(obj.length){
+        for(var i=0;i<obj.length;i++){
+            return obj[i].className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+        }
+
+    }else{
+        return obj.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+    }
+    
+}
+
+```
+
+
+### event loop js事件循环 microtask macrotask：
+
+  * 首先看一个面试题：
+    
+```
+console.log('start')
+
+const interval = setInterval(() => {  
+  console.log('setInterval')
+}, 0)
+
+setTimeout(() => {  
+  console.log('setTimeout 1')
+  Promise.resolve()
+      .then(() => {
+        console.log('promise 3')
+      })
+      .then(() => {
+        console.log('promise 4')
+      })
+      .then(() => {
+        setTimeout(() => {
+          console.log('setTimeout 2')
+          Promise.resolve()
+              .then(() => {
+                console.log('promise 5')
+              })
+              .then(() => {
+                console.log('promise 6')
+              })
+              .then(() => {
+                clearInterval(interval)
+              })
+        }, 0)
+      })
+}, 0)
+
+Promise.resolve()
+    .then(() => {  
+        console.log('promise 1')
+    })
+    .then(() => {
+        console.log('promise 2')
+    })
+
+ ```
+
+ * 首先分析一下：
+
+    > 大家都知道js 是单线程，优先执行主线成任务，才有同步和异步的之分；
+    同步任务：
+    在主线程排队的任务，一个执行完成之后，才能执行下一个任务；
+
+    > 异步任务：不进入主线程，而是进入任务队列，只有”任务队列”通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。
+
+    > 只有主线层空了，就会读取任务队列；这就是js 的运行机制；
+
+* 任务队列不止一个Microtasks Macrotasks
+  * microtasks:
+    * process.nextTick
+    * promise
+    * MutationObserver
+
+  * macrotasks:
+    * setTimeout
+    * setInterval
+    * setImmediate
+    * UI渲染
+
+* 一个事件循环(event loop)会有一个或多个任务队列(task queue)
+* task queue 就是 macrotask queue
+* 每一个 event loop 都有一个 microtask queue
+
+>事件循环的顺序，决定了JavaScript代码的执行顺序。它从script(整体代码)开始第一次循环。之后全局上下文进入函数调用栈。直到调用栈清空(只剩全局)，然后执行所有的micro-task。当所有可执行的micro-task执行完毕之后。循环再次从macro-task开始，找到其中一个任务队列执行完毕，然后再执行所有的micro-task，这样一直循环下去。
+
+>包裹在一个 script 标签中的js代码也是一个 task 确切说是 macrotask。
+
+>同步代码执行完后有microtask执行microtask，没有microtask执行下一个macrotask，如此往复循环至结束
+
+* 任务队列分为 macrotasks 和 microtasks，而Promise中的then方法的函数会被推入 microtasks 队列，而setTimeout的任务会被推入 macrotasks 队列。在每一次事件循环中，macrotask 只会提取一个执行，而 microtask 会一直提取，直到 microtasks 队列清空。
+* 那么也就是说如果我的某个 microtask 任务又推入了一个任务进入 microtasks 队列，那么在主线程完成该任务之后，仍然会继续运行 microtasks 任务直到任务队列耗尽。
+
+* 而事件循环每次只会入栈一个 macrotask ，主线程执行完该任务后又会先检查 microtasks 队列并完成里面的所有任务后再执行 macrotask。
+
+
+### 递归算法：
+ * 在函数中自己调用自身；
+ * 在递归过程 要有一个出口；
+ 
 
  
