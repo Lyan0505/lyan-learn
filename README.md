@@ -409,5 +409,76 @@ Promise.resolve()
  * 在函数中自己调用自身；
  * 在递归过程 要有一个出口；
  
+ 
+
+### 作用域 原型链
+  * 作用域链：
+      * 作用域的特点就是，先在自己的变量范围中查找，如果找不到，就会沿着作用域往上找。
+  * 原型链：
+      * 原型链是针对构造函数的，比如我先创建了一个函数，然后通过一个变量new了这个函数，那么这个被new出来的函数就会继承创建出来的那个函数的属性，然后如果我访问new出来的这个函数的某个属性，但是我并没有在这个new出来的函数中定义这个变量，那么它就会往上（向创建出它的函数中）查找，这个查找的过程就叫做原型链。
+
+> 每一个实例对象都有自己的属性和方法的副本；用构造函数生成实例，有一个缺点就是无法共享属性和方法；为了不浪费资源，就决定在构造函数里面设置一个prototype 属性，所有实例对象需要共享的属性和方法，都在这个对象里面，那些不需要共享的属性和方法就放在构造函数里面；
+
+
+> 也就是说：实例一旦创建，将自动引用 prototype的对象的属性和方法；也就是说对象的属性和方法分为了2块：<br>
+    1、一个是自身的（本地的）；<br>
+    2、一种是引用的
+
+
+ ##### 构造函数模式的问题：
+        
+   * 构造函数很好用 但是很浪费内存；
+   * 每一个实例对象 对于一样的方法和属性 ，都要重复一遍；多占用内存；所以prototype 模式出来了；
+   * 每一个构造函数都有prototype ，指向另一个对象。这个对象的所有属性和方法，都会被构造函数的实例继承。
+   * 原来，任何一个prototype对象都有一个constructor属性，指向它的构造函数。
+   * 更重要的是，每一个实例也有一个constructor属性，默认调用prototype对象的constructor属性。
+
+   ```
+   function leiyanyan(name,age){
+    this.name='1',
+    this.age=18
+
+  }
+
+  leiyanyan.prototype.wweight=100;
+
+  var aa=new leiyanyan();
+
+  yan.constructor==leiyanyan //true
+
+  leiyanyan.prototype.constructor==yan.constructor==leiyanyan  //true  (每一个实例也有一个constructor属性，默认调用prototype对象的constructor属性)
+
+ yan.__proto__==leiyanyan.prototype //true
+
+ ```
+
+ #### 构造函数的继承：
+ > 继承也就是一个对象继承另外一个的属性和方法；
+  
+  * 构造函数的绑定：
+    * 使用call和apply 就是将父对象的构造函数绑定在子对象上面；
+    
+    ```
+     function Child(name){
+         Parent.apply(this,argument);
+            this.name='leiyanyan'    
+        }
+
+        function Parent(age){
+            this.age=12;
+        }
+    ```
+
+
+
+
+
+
+
+
+
+
+
+
 
  
