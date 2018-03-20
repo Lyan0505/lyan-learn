@@ -468,7 +468,44 @@ Promise.resolve()
             this.age=12;
         }
     ```
+ #### 构造函数的继承：
+ > 继承也就是一个对象继承另外一个的属性和方法；
+  
+  * 构造函数的绑定dsd：
+    * 使用call和apply 就是将父对象的构造函数绑定在子对象上面；
+       
+    ```
+     function Child(name){
+         Parent.apply(this,argument);
+            this.name='leiyanyan'    
+        }
 
+        function Parent(age){
+            this.age=12;
+        }
+    
+    ```
+
+ * prototype 模式：
+   * A对象得prototype对象指向B对象得实例，那么A就继承了B；
+   
+   ```
+   Child.prototype=new Person();
+   Child.prototype.constructor=Child;
+   var cc=new Child();
+   alert(cc.age)
+  ```
+
+  * 直接继承prototype
+   第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
+
+```
+Child.prototype= Person.prototype;
+Child.prototype.constructor=Child;
+var cc=new Child();
+与前一种方法相比，这样做的优点是效率比较高（不用执行和建立Animal的实例了），比较省内存。缺点是 Cat.prototype和Animal.prototype现在指向了同一个对象，那么任何对Cat.prototype的修改，都会反映到Animal.prototype。
+
+```
 
 
 
