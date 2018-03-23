@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrap">
+        <h2>String 对象 以及常用的方法</h2>
+        <p></p>
+        <h2>js中__proto__和prototype的区别和关系？</h2>
+        <p></p>
+        <h2>作用域链 原型链 </h2>
+        <p></p>
+    </div>
+
+
+    <script>
+
+        function extend(child,Parent){
+            var Null=function(){};
+            Null.prototype=Parent.prototype;
+            child.prototype=new Null();
+            child.prototype.constructor=child;
+          
+        }
+
+        function Child(name){
+            this.name='leiyanyan'
+            
+        }
+
+        function Parent(age){
+            this.age=12;
+        }
+        Parent.prototype.aaa='aaa';
+       
+       extend(Child,Parent);
+
+        var obj=new Child();
+        
+        alert(obj.aaa);
+
+
+    
+    </script>
+
+</body>
+</html>
