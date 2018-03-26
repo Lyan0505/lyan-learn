@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        数组
+    </div>
+    <script>
+        // includes 
+        //一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
+    //  var a=[3,4,4,3];
+    //  console.log(a.includes(4))
+
+     //工作中遇到 求两个数组的差值
+(function(){
+    var a=[2,3,4,7,9,33,322,3,4,444,3];
+     var b=[3,2,7,4,6,12,3,9];
+   //求数组 a-b
+   console.log( a.filter(v=>!b.includes(v)))
+
+   //求数组差集
+   var arr=[];
+   a.map(v=>{
+       if(b.includes(v)){return}
+    arr.push(v)
+    
+   })
+   b.map(v=>{
+       if(a.includes(v)){return}
+    arr.push(v)
+  
+   })
+   console.log(arr)
+
+
+
+
+//数组求差集合
+function diff(arr1, arr2) {
+  return arr1.concat(arr2).filter(function(arg){
+    return !(arr1.indexOf(arg) >= 0 && arr2.indexOf(arg) >= 0);
+  });
+}
+console.log(diff(a,b))
+
+//差集
+var c=a.concat(b);
+var dd=c.filter(v => !a.includes(v) || !b.includes(v) )
+
+console.log([...new Set(dd)])
+
+//数组去重 合并
+function combine(){ 
+    let arr = [].concat.apply([], arguments);  //没有去重复的新数组 
+    return Array.from(new Set(arr));
+} 
+
+var m = [1, 2, 2], n = [2,3,3]; 
+console.log(combine(m,n));  
+
+//其实我不是很明白上面的写
+var concatArr=m.concat(n);
+console.log(Array.from(new Set(arr)));
+//或者
+console.log([...new Set(arr)]);
+
+
+
+})()
+   
+
+ 
+    
+    </script>
+    
+</body>
+</html>
