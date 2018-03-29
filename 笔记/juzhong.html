@@ -39,15 +39,49 @@
     <meta name="x5-page-mode" content="app">
     <!-- windows phone 点击无高光 -->
     <meta name="msapplication-tap-highlight" content="no">
+    <style>
+    .wrap{
+       background-color: #fff; 
+    }
+    .item{
+        list-style: none;
+        width: 100%;
+        height: 100px;
+        margin-bottom: 20px;
+        position: relative;
+        border: 1px solid #d9d9d9;
+    }
+    .item .value{
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        widows: 100%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+      -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    </style>
 </head>
 <body>
     <div class="wrap">
         <ul>
-            <li class="item">為解決大書法家</li>
-            <li class="item">都灑了大神</li>
-            <li class="item">多撒活動就好似打好電話大哭大叫打電話大神帶客戶</li>
-            <li class="item">打快點大廈電話撒大會上看到哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈但是肯定會大神快捷單號s</li>
-            <li class="item">大聲的頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂頂</li>
+            <li class="item"><div class="value">16G</div></li>
+             <li class="item">
+                 <div class="value">阿迪哈萨克的大会上肯定会大厦电话开机大速度很快啊大速度很快但是打开</div>
+             </li>
+             <li class="item">
+                <div class="value">阿迪哈萨克的大会上肯克的大会上肯定会大厦电话开机大速度很快啊克的大会上肯定会大厦电话开机大速度很快啊定会大厦电话开机大速度很快啊大速度很快但是打开</div>
+            </li>
+            <li class="item">
+                <div class="value">阿迪哈萨克的大会上肯定会大厦电话开机大速度很快啊大速度很快但是打开</div>
+            </li>
+            <li class="item">
+                <div class="value">阿迪哈萨克的大会上肯定会大厦电话开机大速度很快啊大速度很快但是打开</div>
+            </li>
         </ul>
     </div>
     
