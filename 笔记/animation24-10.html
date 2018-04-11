@@ -59,11 +59,11 @@
         function Animate(obj, json, time, sp, fn) {
             this.start = function () {
                 this.moveTo();
-                console.log(this);
+               
 
             },
             //移动
-            this.moveTo = function () {
+            this.moveTo = function (fun) {
                 var _this = this;
                 clearInterval(obj.timer);
                 var pretime = new Date();
@@ -77,14 +77,18 @@
                         }
                         var current = 0;
                         const element = json[key];
-                        console.log(this);
+                       
                         current = parseInt(_this.getStyle(obj, key));
                         if (currenttime - pretime > time) {
                             clearInterval(obj.timer);
 
                         } else {
-                            var speed = (element - current) * ((currenttime - pretime) / time);
-                            obj.style[key] = speed+current + "px";
+                            var speed =fun(currenttime-pretime,current,element - current,time)
+
+                            console.log(speed)
+                            
+                            //  (element - current) * ((currenttime - pretime) / time);
+                            obj.style[key] = speed + "px";
                         }
 
 
@@ -115,22 +119,32 @@
                 } else {
                 return cc / 2 * ((t -= 2) * t * t + 2) + b;
                 }
-            }
-            
+            },
+           this.util={
+            easeInOutCubic:function(t, b, c, d){
+                const cc = c - b;
+                t /= d / 2;
+                if (t < 1) {
+                return cc / 2 * t * t * t + b;
+                } else {
+                return cc / 2 * ((t -= 2) * t * t + 2) + b;
+                }
+            },
+            easinout:{
 
+            }
+
+           }
 
         }
 
-
-    
-           
     
     for (const key in $div) {
         
         $div[key].onclick=function(){
             var _this = $div[key];
-            debugger
-            var Animates = new Animate(_this, { width: 500, height: 200,left:400 }, 1000);
+            
+            var Animates = new Animate(_this, { width: 1000, height: 200 }, 10000,easinout);
             Animates.start();
         }
     }
