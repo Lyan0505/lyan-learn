@@ -93,3 +93,7 @@ animation-iteration-count：infinte 表示无限
 
 
 ## js 动画
+
+* 原生js 实现jq 的animate 的方法，实际事
+* 写动画的过程 插入一个 知识点[getComputedStyle](http://www.zhangxinxu.com/wordpress/2012/05/getcomputedstyle-js-getpropertyvalue-currentstyle/)
+* [style 和getComputedStyle](https://www.cnblogs.com/cythia/p/6721145.html)
