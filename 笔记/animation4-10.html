@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jq animation</title>
+    
+    <style>
+        
+    .item{
+        width: 200px;
+        height: 200px;
+        background-color: palevioletred;
+        text-align: center;
+        position: absolute;
+        left: 100px;
+        
+
+    }
+    .restBtn{
+        width: 100px;
+        height: 50px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
+        margin-bottom: 20px;
+        margin: 0 auto 20px;
+        cursor: pointer;   
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="restBtn">点击我还原</div>
+
+    <div class="item" id="box">
+        点击我移动
+    </div>
+
+
+
+    <script>
+    var $div=document.getElementsByClassName('item');
+    var $btn=document.getElementsByClassName("restBtn");
+    var isClick=false;
+
+    
+  
+   
+   //构造函数
+   function Animate(obj,json,sp){
+     this.start=function(){
+         this.moveTo();
+
+     },
+     this.moveTo=function(){
+        var current=100;
+        obj.timer=setInterval(function(){
+            var flag=true;
+           
+            for (const key in json) {
+                if (!json.hasOwnProperty(key)) {
+                    continue   
+                }
+                const element = json[key];
+                var speed=(element-100)*sp;
+                
+                current=current+speed; 
+                obj.style[key]=current+"px";
+
+                  if(current != json[key]){
+                        flag = false;
+                    } 
+            }
+
+            if(flag){
+                clearInterval(obj.timer);
+            }
+
+        },1000/60)  
+     },
+     this.getStyle=function(){
+         alert(false)
+
+     }
+   }
+  
+   
+  
+  
+   $div[0].onclick=function(){
+       // moveTo(400,400,200,10); 
+       var Animates=new Animate(this,{left:500,},0.01);
+       Animates.start();   
+    //    var _this = this;
+    //         animate(_this, {width: 500, height: 200},10, 0.01, function(){
+    //             animate(_this, {width: 300, height: 200},10, 0.01);
+    //         }); 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function animate(obj, json, interval, sp, fn) {
+    clearInterval(obj.timer);
+    //var k = 0;
+    //var j = 0;
+    function getStyle(obj, arr) {
+        if(obj.currentStyle){
+            return obj.currentStyle[arr];    //针对ie
+        } else {
+            return document.defaultView.getComputedStyle(obj, null)[arr]; 
+        }
+    }
+    obj.timer = setInterval(function(){
+        //j ++;
+        var flag = true;
+        for(var arr in json) {
+            var icur = 0;
+            //k++;
+            if(arr == "opacity") {
+                icur = Math.round(parseFloat(getStyle(obj, arr))*100);
+            } else {
+                icur = parseInt(getStyle(obj, arr));
+            }
+            var speed = (json[arr] - icur) * sp;
+            speed = speed > 0 ? Math.ceil(speed): Math.floor(speed);
+            if(icur != json[arr]){
+                flag = false;
+            } 
+            if(arr == "opacity"){
+                obj.style.filter = "alpha(opacity : '+(icur + speed)+' )";
+                obj.style.opacity = (icur + speed)/100;
+            }else {
+                obj.style[arr] = icur + speed + "px";
+            }
+            //console.log(j + "," + arr +":"+ flag);
+        }
+
+        if(flag){
+            clearInterval(obj.timer);
+            //console.log(j + ":" + flag);  
+            //console.log("k = " + k);
+            //console.log("j = " + j);
+            //console.log("DONE");
+            if(fn){
+                fn();
+            }
+        }
+    },interval);
+}
+     
+
+    </script>
+    
+</body>
+</html>

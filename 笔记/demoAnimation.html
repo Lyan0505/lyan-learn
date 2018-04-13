@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>无标题文档</title>
+    <script src="util.js" type="text/javascript"></script>
+    <script src="animation.js" type="text/javascript"></script>
+    <style type="text/css">
+        body {
+            behavior: url("csshover.htc")
+        }
+
+        * {
+            padding: 0;
+            margin: 0
+        }
+
+        .mianbox {
+            width: 480px;
+            margin: 50px auto;
+            height: 240px;
+        }
+
+        .leftbtn {
+            width: 20px;
+            background: #eee;
+            border: 1px solid #ddd;
+            float: left;
+            margin-right: 8px;
+            height: 240px;
+        }
+
+        .leftbtn:hover {
+            background: #fff
+        }
+
+        .rightbtn {
+            width: 20px;
+            background: #eee;
+            border: 1px solid #ddd;
+            float: right;
+            height: 240px;
+        }
+
+        .rightbtn:hover {
+            background: #fff
+        }
+
+        .con {
+            width: 420px;
+            float: left;
+            height: 240px;
+            overflow: hidden;
+            position: relative
+        }
+
+        .con ul {
+            white-space: nowrap;
+            font-size: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .con li {
+            display: inline;
+            vertical-align: bottom;
+            margin-right: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mianbox">
+        <div class="leftbtn" id="leftbtn"></div>
+        <div class="con">
+            <ul>
+                <li>
+                    <img src="http://pic25.nipic.com/20121121/2969675_091845785000_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic23.nipic.com/20120818/9715349_114354586392_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic20.nipic.com/20120329/9715349_154806479182_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic20.nipic.com/20120329/9715349_162301568121_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic23.nipic.com/20120824/9715349_160522342186_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic23.nipic.com/20120824/9715349_160651385195_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic20.nipic.com/20120329/9715349_163520278182_2.jpg" width="205" height="240" />
+                </li>
+                <li>
+                    <img src="http://pic23.nipic.com/20120827/9715349_110350505124_2.jpg" width="205" height="240" />
+                </li>
+            </ul>
+        </div>
+        <div class="rightbtn" id="rightbtn"></div>
+    </div>
+    <script>
+        /**
+        * @para obj  内容对象
+        * @para lbtn 左按钮
+        * @para rbtn 右按钮
+        * @para w      每次滚动的宽
+        * @para duration 每次运行时间
+        * @para tween 缓动类型
+        */
+        function scOnce(obj, lbtn, rbtn, w, autotime, duration, tween) {
+            var am = new animation(_ul),
+                step = 0,
+                ulen = obj.scrollWidth,
+                timmerm
+            dr = 'left',
+                that = this;
+            // 最右端?
+            function isr() {
+                return parseInt($util.dom.getStyle(obj, 'left')) >= 0;
+            }
+            // 最左端?
+            function isl() {
+                return ulen - Math.abs(parseInt($util.dom.getStyle(obj, 'left'))) - 10 <= w;
+            }
+
+            if (isr() && isl())
+                return;
+            // 左移
+            this.goleft = function () {
+                step += -1 * w;
+                am.go({ left: step + "px" }, duration, tween).start();
+            }
+            // 右移
+            this.goright = function () {
+                step += w;
+                am.go({ left: step + "px" }, duration, tween).start();
+            }
+
+            // 注册左按钮事件
+            $util.evt.addEvent(lbtn, 'click', function () {
+                isl() ? that.goright() : that.goleft();
+            })
+            // 注册右按钮事件
+            $util.evt.addEvent(rbtn, 'click', function () {
+                isr() ? that.goleft() : that.goright();
+            })
+
+            $util.evt.addEvent(rbtn, 'mouseover', function () {
+                clearTimeout(timmer);
+            })
+            $util.evt.addEvent(lbtn, 'mouseover', function () {
+                clearTimeout(timmer);
+            })
+            $util.evt.addEvent(rbtn, 'mouseout', function () {
+                timmer = setInterval(auto, autotime);
+            })
+            $util.evt.addEvent(lbtn, 'mouseout', function () {
+                timmer = setInterval(auto, autotime);
+            })
+
+            function auto() {
+                if (isl()) {
+                    dr = "right";
+                }
+
+                if (isr()) {
+                    dr = "left";
+                }
+                that['go' + dr]();
+            }
+            timmer = setInterval(auto, autotime);
+        }
+
+        var _ul = document.getElementsByTagName('ul')[0],
+            lbtn = document.getElementById('leftbtn'),
+            rbtn = document.getElementById('rightbtn');
+        var startgo = new scOnce(_ul, lbtn, rbtn, 430, 3000, 500, $util.tween.Quint.easeInOut);
+    </script>
+</body>
+
+</html>

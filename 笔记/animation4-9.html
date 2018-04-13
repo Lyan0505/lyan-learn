@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable = 0" />
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动画</title>
+    <style>
+        .content {
+            width: 800px;
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .wrap {
+            width: 800px;
+            /* height: 100px; */
+            background-color: pink;
+            box-shadow: 3px 5px 10px 2px rgba(0, 0, 0, .6);
+            -webkit-transition: all 0.5s ease-in;
+            transition: all .3s ease-in;
+            position: relative;
+            height: 600px;
+            /* 
+                    *
+                   *  transition 仅webkit 核心的浏览器 支持，仅在Chrome或是Safari下有 
+                    *
+                    */
+        }
+
+        .pic {
+            display: block;
+            padding: 10px 10px 15px;
+            text-align: center;
+            background: white;
+            border: 1px solid #bfbfbf;
+            -webkit-box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+            -moz-box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+            box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+            -webkit-transition: all 0.3s ease-in;
+            position: absolute;
+            z-index: 1;
+        }
+
+        a,
+        a:hover {
+            color: #333333;
+            text-decoration: none;
+        }
+
+
+        .pic img {
+            display: block;
+            margin-bottom: 10px;
+            border: 0;
+        }
+
+        .pic:hover,
+        .pic:focus,
+        .pic:active {
+            border-color: #9a9a9a;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+            z-index: 2;
+        }
+
+        .pic1 {
+            bottom: 30px;
+            right: 455px;
+            -webkit-transform: rotate(10deg);
+            -moz-transform: rotate(10deg);
+            transform: rotate(10deg);
+        }
+
+        .pic2 {
+            top: 100px;
+            right: 100px;
+            -webkit-transform: rotate(-4deg);
+            -moz-transform: rotate(-4deg);
+            transform: rotate(-4deg);
+        }
+
+        .pic3 {
+            left: 400px;
+            top: 50px;
+            -webkit-transform: rotate(-5deg);
+            -moz-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+        }
+
+        .pic4 {
+            top: 10px;
+            left: 205px;
+            -webkit-transform: rotate(-20deg);
+            -moz-transform: rotate(-20deg);
+            transform: rotate(-20deg);
+        }
+
+        .pic5 {
+            bottom: 20px;
+           left: 90px;
+            -webkit-transform: rotate(10deg);
+            -moz-transform: rotate(10deg);
+            transform: rotate(10deg);
+        }
+
+        .pic6 {
+            bottom: 10px;
+            right: 156px;
+            -webkit-transform: rotate(6deg);
+            -moz-transform: rotate(6deg);
+            transform: rotate(6deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="wrap" id="wrap">
+            <img src="./img/1.jpg" alt="">
+        </div>
+    </div>
+    <script>
+        var $div = document.getElementsByClassName("wrap")[0];
+        var $div2 = document.getElementById('wrap')
+
+        $div.onclick = function () {
+            $div.classList.add('show');
+
+        }
+
+        var box = document.getElementById("wrap");
+        var pics = "";
+        for (var i = 1; i <= 6; i += 1) {
+            var random_width = 100 + 106 * Math.random();
+            pics += '<a href="#zhangxinxu" class="pic pic' + i + '"><img style="min-height:75px;" width="' + random_width + '" src="./img/' + i + '.jpg" />美女' + i + '</a>';
+        }
+        box.innerHTML = pics;
+
+
+
+    </script>
+
+</body>
+
+</html>

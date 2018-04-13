@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jq animation</title>
+
+    <style>
+
+        ul{
+            position: absolute;
+
+        }
+        .item {
+            width: 200px;
+            height: 100px;
+            background-color: palevioletred;
+            text-align: center;
+            margin-bottom: 20px;
+            list-style: none;
+            line-height: 100px;
+        }
+
+        .restBtn {
+            width: 100px;
+            height: 50px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            line-height: 50px;
+            margin-bottom: 20px;
+            margin: 0 auto 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="restBtn">点击我还原</div>
+
+   <ul>
+       <li class="item" data-way="easeOut">加速</li>
+       <li class="item">由慢到快</li>
+       <li class="item" data-way="easeInOutCubic">由快到慢</li>
+       <li class="item" data-way="easeIn">减速</li>
+   </ul>
+
+
+
+    <script>
+        var $div = document.getElementsByClassName('item');
+        var $btn = document.getElementsByClassName("restBtn");
+      
+
+        //构造函数
+        function Animate(obj, json, time, fn) {
+            this.start = function () {
+                this.moveTo();
+               
+
+            },
+            //移动
+            this.moveTo = function () {
+                var _this = this;
+                clearInterval(obj.timer);
+                var pretime = new Date();
+                obj.timer = setInterval(function () {
+                    var currenttime = new Date();
+                    var flag = true;
+
+                    for (const key in json) {
+                        if (!json.hasOwnProperty(key)) {
+                            continue
+                        }
+                        var current = 0;
+                        const element = json[key];
+                       
+                        current = parseInt(_this.getStyle(obj, key));
+                        if (currenttime - pretime > time) {
+                            clearInterval(obj.timer);
+
+                        } else {
+                            console.log(this)
+                            var speed =fn(currenttime-pretime,current,element - current,time)
+
+                          
+                            
+                            //  (element - current) * ((currenttime - pretime) / time);
+                            obj.style[key] = speed + "px";
+                        }
+
+                    }
+
+
+                }, 1000 / 60)
+            },
+            // 获取json 里面的属性值
+            this.getStyle = function (obj, key) {
+                if (obj.currentStyle) {
+                    return obj.currentStyle[key];
+                } else {
+                    return window.getComputedStyle(obj, null)[key];
+                }
+            }
+
+         
+        
+        }
+
+           var util={
+            easeInOutCubic:function(t, b, c, d){
+                const cc = c - b;
+                t /= d / 2;
+                if (t < 1) {
+                return cc / 2 * t * t * t + b;
+                } else {
+                return cc / 2 * ((t -= 2) * t * t + 2) + b;
+                }
+            },
+            easeIn: function(t, b, c, d) {
+                return c * (t /= d) * t + b;
+            },
+            easeOut: function(t, b, c, d) {
+                return - c * (t /= d) * (t - 2) + b;
+            },
+           }
+
+    
+    for (const key in $div) { 
+        var this2=this;
+        $div[key].onclick=function(){
+            var _this = $div[key];
+            var _way=$div[key].getAttribute('data-way');
+            console.log(_way);
+            console.log(this2)
+            var Animates = new Animate(_this, { width: 1000, height: 200 }, 10000,util.easeInOutCubic);
+            Animates.start();
+        }
+    }
+
+//1循环一次 
+var arr1 = [1,2,3,44,44,11,2,3,333,3,3];
+    function removeRepeat(arr){
+        var removeArr = [],obj = {};
+        for(var i = 0, l = arr.length; i < l; i++){
+            for(var j=i+1;j=arr.length;j++){
+               
+
+            } 
+        };
+        return removeArr;
+    }
+  
+
+    </script>
+
+</body>
+
+</html>
