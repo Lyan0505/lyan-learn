@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>常用算法</title>
+</head>
+
+<body>
+    <div class="wrap">
+
+    </div>
+    <script>
+        //*****************
+        //数组去重
+        //*****************
+        //1循环一次 
+        var arr1 = [1, 2, 3, 44, 44, 11, 2, 3, 333, 3, 3];
+        function removeRepeat(arr) {
+            var removeArr = [], obj = {};
+            for (var i = 0, l = arr.length; i < l; i++) {
+                if (!obj[arr[i]]) {
+                    removeArr.push(arr[i]);
+                    obj[arr[i]] = 1;
+                }
+            };
+            return removeArr;
+        }
+        removeRepeat(arr1)
+        console.log(removeRepeat(arr1))
+
+        //循环2次
+        function removeRepeat2(arr) {
+            var removeArr = [arr[0]];
+            for (var i = 1; i < arr.length; i++) {
+                var flag = false;
+                for (var j = 0; j < arr.length; j++) {
+                    if (arr[i] == removeArr[j]) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    removeArr.push(arr[i])
+                }
+            }
+            return removeArr;
+        }
+        var arr2 = [2, 3, 4, 4, 3, 211, 1233, 444, 1, 2, 3]
+        removeRepeat2(arr2);
+        console.log(removeRepeat2(arr2))
+
+        //利用下标查询
+        function removeRepeat3(arr){
+            var res=[arr[0]];
+            for(var i=0;i<arr.length;i++){
+                if(res.indexOf(arr[i])==-1){
+                    res.push(arr[i]);
+                }
+            }
+            return res;
+        }
+        console.log(removeRepeat3(arr2))
+
+        //ES6 
+        console.log([...new Set(arr2)])
+
+        //*************************
+        //排序算法
+        //*************************
+       
+       //1.排序算法
+        var arr=[12,2,32,34,5,53,32,2,3];
+       var bb= arr.sort((a,b)=>{
+            return a-b;
+        })
+        console.log(bb)
+
+        //2.快速排序算法
+         //快速排序  
+         var arr22=[12,2,32,34,5,53,32,2,3];
+        function qSort(arr) {  
+            if(arr.length === 0)  
+                return [];  
+            var left = [];  
+            var right = [];  
+            var pivot = arr[0];  
+            for(var i=1;i<arr.length;i++){  
+                if(arr[i]<pivot)  
+                    left.push(arr[i]);  
+                else  
+                    right.push(arr[i]);  
+            }  
+            return qSort(left).concat(pivot,qSort(right));  
+        } 
+      console.log('kuaidu')+console.log(qSort(arr22));
+
+
+        //****************
+        // 数组降维度 也就是数组扁平化
+        //*****************
+         
+         //1
+         var arr5=[1,2,3,[34,4,4]];
+         Array.prototype.concat.apply([],arr5);
+
+         //apply 自动打散参数 然后concat 拼接 但是只能降到一维数组
+
+         //2、递归
+
+         var fun=function(arr){
+             let len= arr.length, newArr=[];
+             for(var i=0;i<len;i++){
+                 if(Array.isArray(arr[i])){
+                     newArr.push.apply(newArr,fun(arr[i]));
+                 }else{
+                     newArr.push(arr[i])
+                 }
+             }
+             return newArr;
+         }
+         console.log(fun(arr5));
+
+         //3.reduce 优雅降级
+         var  flaten = arr=>arr.reduce((pre,cur)=>{
+             Array.isArray(cur)?pre.push(...flaten(cur)):pre.push(cur);
+             return pre;
+         },[])
+         console.log(flaten(arr5));
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
