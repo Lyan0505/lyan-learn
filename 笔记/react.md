@@ -4,6 +4,15 @@
 * 大括号来定义以 JavaScript 表达式为值的属性
 * JSX 的特性是比较接近JS 而不是HTML ，react Dom 使用小驼峰命名 cameCase
 * class 变成className 而tabindex 则对应tabIndex （JSX class 关键字）
+
+## 生命周期
+* constructor()
+* componentWillMount()
+* render()
+* componentDidMount()
+> 执行顺序 由上而下 也就是说获取外部数据加载到组件上，只能在组件已经挂载到真实网页才可以。否则 加载不到组件
+* componentDidMount() 组件已经挂载到网页上才会被调用执行，
+
 ## 组件定义
 * 组件名字必须大写字母开头
 * 使用组件的时候引用或者定义
@@ -187,9 +196,110 @@ function Mailbox(props) {
 * 循环渲染，key
 * 用key 提取组件，提取组件的时候key 应该放在 提取的组件上而不是放在 组件内的li 上
 * 当map() 方法 的内部调用方法，最好在每一个元素上加上独一无二的key
-* 
+
 
 ## 表单
+* 在react 可变的状态通常保存在组件的状态中，只能用setState() 方法进行更新；
+* 受控组件，每个状态都有一个与之相关
+
+## 非受控组件
+* 没有添加value 属性的组件
+
+
+## 受控组件
+* 就是为某个表单组件添加value属性
+```
+render: function() {
+    return <input type="text" value="Hello!" />;
+  }
+```
+* 组件的value 值一旦设置某个具体的值，需要调用者来控制组件的value 的改变
+* 渲染后的input组件的用户交互，用户输入的任何值将不起作用，input输入框中的值始终为Hello!。这与HTML中input表现不一致
+* 为了控制组件的值，需要控制内部的state ，即组件内部要维护一个状态state以便配合input组件的onChange和setState方法来完成对组件的控制
+
+>受控元素：一般用在需要动态设置初始值的情况，
+> 非受控元素：一般用于无任何状态初始值信息的情况，例如：from 表单创建信息时，input 表单元素 没有初始值，需要用户输入；
+
+## 组合继承 
+* 组件 直接使用children 将子元素 直接传递出去；
+* 有时候组件有多个入口的时候 ，自己可以使用自己约定的属性；
+```
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+      {props.children}
+    </FancyBorder>
+  );
+}
+
+class SignUpDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = {login: ''};
+  }
+
+  render() {
+    return (
+      <Dialog title="Mars Exploration Program"
+              message="How should we refer to you?">
+        <input value={this.state.login}
+               onChange={this.handleChange} />
+
+        <button onClick={this.handleSignUp}>
+          Sign Me Up!
+        </button>
+      </Dialog>
+    );
+  }
+
+  handleChange(e) {
+    this.setState({login: e.target.value});
+  }
+
+  handleSignUp() {
+    alert(`Welcome aboard, ${this.state.login}!`);
+  }
+}
+
+```
+## react 理念
+
+> React 数据流是单向的，并在组件层次向下传递。 所以state 的位置？
+
+* 
+* 
+## 深入JSX
+* JSX 编译后会调用 React.creatElement 方法，所以在你的JSX 要首先声明react 变量;
+
+* 组件建议大写开头，小写开头 的标签名会认为是HTML 原生标签；
+* if 语句和for 循环 在js 中不是表达式，所以不能直接在JSX 中使用，但是可以放在周围的代码中
+* 将字符串变量作为属性值传递
+* 如果你已经有了个props 并且想在JSX 传递它，你可以使用... 作为扩展操作符来传递整个属性对象，可以
+* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
