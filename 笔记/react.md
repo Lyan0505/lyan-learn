@@ -7,7 +7,7 @@
 
 ## 生命周期
 * constructor()
-* componentWillMount()
+* componentWillMount() 最新的版本 被废弃掉了
 * render()
 * componentDidMount()
 > 执行顺序 由上而下 也就是说获取外部数据加载到组件上，只能在组件已经挂载到真实网页才可以。否则 加载不到组件
