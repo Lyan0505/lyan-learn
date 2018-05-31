@@ -5,13 +5,92 @@
 * JSX 的特性是比较接近JS 而不是HTML ，react Dom 使用小驼峰命名 cameCase
 * class 变成className 而tabindex 则对应tabIndex （JSX class 关键字）
 
-## 生命周期
-* constructor()
-* componentWillMount() 最新的版本 被废弃掉了
+# 生命周期
+> react 生命周期 分为三种状态 初始化》 更新 》销毁
+### 初始化
+* getDefaultProps
+* getInitialState() 此时可以访问props
+* componentWillMount() 组件初始化的视乎调用，以后组件更新不调用，整个生命周期只调用一次，此时可以调用 state
+* render()  最重要的步骤 就是创建虚拟Dom 进行diff 算法，更新dom 树 都在此进行。此时不能修改 state
+* componentDidMount()组件渲染之后调用
+
+
+---
+### 更新
+
+* componentWillReceiveProps() 接受新的prop 时候调用
+* shouldComponentUpdate( nextProps,nextState)  组件接受新的state 或者props 然后 对比以前的 是否相同，如果相同 则返回false 阻止更新
+* componentWillUpdata(nextProps, nextState) 组件更新时候调用，此时可以调用 state
 * render()
-* componentDidMount()
+* componentDidUpdate() 组件初始化不调用 然后 组件更新完成时候调用，此时可以修改 state
+
+---
+
+### 卸载
+ * componentWillUnmount()
+
+
 > 执行顺序 由上而下 也就是说获取外部数据加载到组件上，只能在组件已经挂载到真实网页才可以。否则 加载不到组件
 * componentDidMount() 组件已经挂载到网页上才会被调用执行，
+
+## 组件传值
+
+>如果使用事件模式，是可以解决组件之间的回调，但是频繁的使用 会使整个程序数据流 越来越乱，尽量遵循单项数据流
+
+
+### 父>子
+> 通过props 将数据传给子组件
+
+> context 可以让子组件访问组件的数据，无需从祖先组件一层一层传递
+
+```
+class Parent extends component{
+     getChildContext() {
+        return {color: "purple"};
+     }
+    render(){
+        const children = this.props.messages.map((message) =>
+          <Button text={message.text} />
+        );
+        return <div>{children}</div>;
+    }
+}
+
+Parent.childContextTypes = {
+    color:PropTypes.string  
+}
+
+```
+
+
+
+```
+class Button extends React.Component {
+  render() {
+    return (
+      <button style={{background: this.context.color}}>
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+Button.contextTypes = {
+  color: PropTypes.string
+};
+```
+
+> 父组件添加getChildContext() 方法 和childContextTypes 属性。 react 会自动将color 传递给子树组件中的任何组件。不过子组件必须定义 contextTypes 属性不然 获取到context 为空；
+
+
+
+### 子>父
+> 父组件 通过props 一个callback 传给子组件，子组件内调用这个callback 即可改变 父组件的数据
+
+
+### 兄弟之间
+
+
 
 ## 组件定义
 * 组件名字必须大写字母开头
@@ -68,6 +147,13 @@ class Clock extends React.Component {
 * 应该使用setSate
 * 构造函数 是唯一一个初始化this.state 的地方
 * this.props 和this.state 可能是异步的，此时应该接受一个函数 而不是一个对象，先前的状态作为第一个参数，更新被应用时的props
+
+* setState 不同于props 的一点就是，state 是可以被修改的
+* setState 可以接受两个参数，第二个是一个函数，会在setState调用完成并且开始重新渲染的时候 被调用，可以用来监听 是否完成；
+* props 是外部传入的数据参数，是不可变的；
+* 没有state 的叫做无状态组件，有state 的叫做有状态组件；
+* 
+
 
 ```
 this.setState((prevState, props) => ({

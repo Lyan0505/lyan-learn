@@ -8,6 +8,11 @@
    *  3、loader
    * 4、插件（plugins）
 
+## webpack
+* webpack 是以commonJS 的形式来书写脚本，支持import 或者require 的写法来 引入各个模块；
+* webpack还可以直接替代能替代不少原本属于gulp的工作，比如打包，压缩，混淆，图片转base64等
+* webpack 提供了 配套的dev-sever 并且支持热更新；
+* 
 ### 入口entry
 
    * webpack 应该使用哪个模块，来作为构建其内部依赖图的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的 
