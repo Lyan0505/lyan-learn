@@ -103,6 +103,9 @@ Button.contextTypes = {
 * 创建一个render 方法
 * 将函数体一到render 的空方法中
 * 在render()方法中，使用this.props 替换props
+* 使用类就允许我们使用它的特例，例如局部状态，生命周期的钩子函数
+* 可以为类构造函数  来初始化状态
+* 
 
 
 ```
@@ -245,6 +248,10 @@ foo();
 foo() 被window 调用foo() 函数作用域中的this 也是window ，剪头函数和父级函数共享this 所以结果还是window
 
 ```
+* 通过箭头函数的方式,事件对象必须显示的进项传递，但是通过bind 方式，事件对象以及更多的参数将会 被隐式 的进行传递
+* 通过bind 方式 向监听函数传参数，事件对象e 要排在 传递参数的后面
+* 
+
 
 ## 条件渲染
 
@@ -360,7 +367,9 @@ class SignUpDialog extends React.Component {
 
 > React 数据流是单向的，并在组件层次向下传递。 所以state 的位置？
 
-* 
+* React 是单向数据流，数据主要 从父节点传递到子节点，如果顶层的某个props 改变了，React 会重新渲染所有的子节点
+*  对于，深层组件的数据传递，， 父组件定义一个childContextTypes ，在子组件或者孙子组件上都是可以通过contextTypes ，获取到 传下来的 属性值
+
 * 
 ## 深入JSX
 * JSX 编译后会调用 React.creatElement 方法，所以在你的JSX 要首先声明react 变量;
@@ -369,6 +378,7 @@ class SignUpDialog extends React.Component {
 * if 语句和for 循环 在js 中不是表达式，所以不能直接在JSX 中使用，但是可以放在周围的代码中
 * 将字符串变量作为属性值传递
 * 如果你已经有了个props 并且想在JSX 传递它，你可以使用... 作为扩展操作符来传递整个属性对象，可以
+
 * 
 
 

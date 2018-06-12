@@ -10,7 +10,22 @@
 * 
 
 ## ES6
-
+### 箭头函数和普通函数的区别
+* [箭头函数和普通函数](https://www.cnblogs.com/freelyflying/p/6978126.html)
+* 箭头函数的this 只想在定义它时，它所处的对象，不是执行时候的对象，定义它的时候可能是window （即继承父类的this）
+```
+<script>
+  var obj = {
+    say: function () {
+      setTimeout(function () {
+        console.log(this)
+      });
+    }
+  }
+  obj.say();
+</script>
+```
+> 匿名函数,定时器中的函数,由于没有默认的宿主对象,所以默认this指向window
 ## Vue
 
 ## React
