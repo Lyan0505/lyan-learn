@@ -92,6 +92,7 @@ Button.contextTypes = {
 
 
 
+
 ## 组件定义
 * 组件名字必须大写字母开头
 * 使用组件的时候引用或者定义
@@ -297,6 +298,10 @@ function Mailbox(props) {
 
 ## 非受控组件
 * 没有添加value 属性的组件
+* 也可以说react 内部控制 不受调用者的控制
+* <input type="file"> 由于该标签的value 属性只是可读的，所以它是react 中的一个非受控组件
+* 
+
 
 
 ## 受控组件
@@ -309,6 +314,8 @@ render: function() {
 * 组件的value 值一旦设置某个具体的值，需要调用者来控制组件的value 的改变
 * 渲染后的input组件的用户交互，用户输入的任何值将不起作用，input输入框中的值始终为Hello!。这与HTML中input表现不一致
 * 为了控制组件的值，需要控制内部的state ，即组件内部要维护一个状态state以便配合input组件的onChange和setState方法来完成对组件的控制
+* 如果我们想使 input 的受调用者的操控，那么我们只能 setState() 方法进行更新；
+
 
 >受控元素：一般用在需要动态设置初始值的情况，
 > 非受控元素：一般用于无任何状态初始值信息的情况，例如：from 表单创建信息时，input 表单元素 没有初始值，需要用户输入；
@@ -379,6 +386,14 @@ class SignUpDialog extends React.Component {
 * 将字符串变量作为属性值传递
 * 如果你已经有了个props 并且想在JSX 传递它，你可以使用... 作为扩展操作符来传递整个属性对象，可以
 
+* 
+## Dom Diff
+
+* 当比较两棵DOM树的差异时，React首先比较两个根元素。 如果根元素的类型不同，那么行为也是不同的。
+* [Dom diff](https://www.jianshu.com/p/1da5c91f5e5d)
+* react 实现了一个基础两个假设，直观的推断出O（n）算法：
+* 不同类型的两个元素将产生不同的树；
+* 开发人员 可以在不同的渲染质检使用key 属性来表示哪些子元素是稳定的；
 * 
 
 
