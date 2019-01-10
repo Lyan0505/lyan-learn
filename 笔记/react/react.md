@@ -396,7 +396,72 @@ class SignUpDialog extends React.Component {
 * 开发人员 可以在不同的渲染质检使用key 属性来表示哪些子元素是稳定的；
 * 
 
+----
+ 2019.01.10 
 
+ ## react v16.3 版本更新 
+ ### 去掉三个 生命周期
+ * componentWillMount
+ * componentWillReceiveProps
+ * componentWillReceiveProps
+
+ 同时增加了 2个 生命周期
+ * static getDerivedStateFromProps
+ * getSnapshotBeforeUpdate
+
+### static getDerivedStateFromProps
+* 触发时间： 在组件构建之后（虚拟Dom 之后，实际Dom 挂载之前）以及每次获取新的props 之后
+*  每次接受的新的props 之后 都会返回一个新的对象作为state  返回null 则说明并不需要更新 state
+
+```
+ static getDerivedStateFromProps(nextProps, prevState) {
+    // 没错，这是一个static
+ }
+
+```
+
+### getSnapshotBeforeUpdate
+* 触发时间： update 发生的时候，在render 之后 在组件dom 渲染之前
+返回一个值 作为componentDidupdate 的第三个参数
+
+```
+ getSnapshotBeforeUpdate(prevProps, prevState) {
+    // ...
+ }
+```
+
+---
+
+#### 注意：
+* 请求数据:
+* 添加监听事件：
+>   react只能保证componentDidMount-componentWillUnmount成对出现，componentWillMount可以被打断或调用多次，因此无法保证事件监听能在unmount的时候被成功卸载，可能会引起内存泄露
+
+* getDerivedStateFromProps是一个static方法，意味着拿不到实例的this,所以想要在setState之前比对一下props有没有更新，下面方法是不能用了
+
+```
+if (this.props.currentRow !== nextProps.currentRow) {
+ 	...
+}
+```
+ 取而代之：
+```
+if (nextProps.currentRow !== prevState.lastRow) {
+  return {
+    ...
+    lastRow: nextProps.currentRow,
+  };
+  // 不更新state
+  return null
+}
+
+```
+
+总结：
+
+* 在upate之前获取dom节点，getSnapshotBeforeUpdate(prevProps, prevState)代替componentWillUpdate(nextProps, nextState)  ，getSnapshotBeforeUpdate在render之后，但在节点挂载前
+
+* componentDidUpdate(prevProps, prevState, snapshot)直接获得getSnapshotBeforeUpdate返回的dom属性值
 
 
 
