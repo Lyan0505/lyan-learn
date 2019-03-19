@@ -8,6 +8,7 @@
     * 单个slot：简单来说，只使用这个标签的话，可以将父组件放在子组件的内容，放到想让他显示的地方。
     * 具名slot:
        > 父组件在要分发的标签里添加 slot=”name名” 属性;子组件在对应分发的位置的slot标签里，添加name=”name名” 属性，然后就会将对应的标签放在对应的位置了。
+
 #### webpack 简单熟悉：
  * 一些简单的文件参数：
     * entry 页面入口文件的配置；
@@ -68,7 +69,7 @@
 
 ## 为了更好的开发 出来了很多利器
 
-### Source Map 为了调试助理
+## Source Map 为了调试助理
 * 有时候打包之后的文件很难找到出错的地方，source map 就是解决这个问题
 * webpack 可以在我们打包的时候为我们生成 source map 为我们提供一种对应编译文件和源文件的方法，使编译的代码可读性提高了不少
 *  配置的方法 如下：
@@ -76,12 +77,12 @@
 >  devtool: 'eval-source-map' 
 *  有四种不同的配置，各有优点，具体参考文档，自己选择就行
 
-### 自动监控，自动编译，自动刷新浏览器
+## 自动监控，自动编译，自动刷新浏览器
 > npm install --save-dev webpack-dev-server
 
 * webpack 提供一个可选的本地服务，本地的服务是基于node 构建
 
-### 方便打包的命令
+## 方便打包的命令
 
 > npx webpack --config config/webpack.config.js
 *  方便我们本地开发，浏览器 监听代码的修改，提高开发的效率
@@ -95,7 +96,7 @@
 
 
 
-### Loaders
+## Loaders
 
 * Loader 是很重要的一个部分
 * 这就是webpack 得神奇之处，它有能力调用外部的脚本工具，实现对不同格式的文件的处理，比如 scss 转css ，或者是吧下一代的js 文件转换为浏览器兼容的js 文件
@@ -104,7 +105,7 @@
 
 > test, loader, include/exclude,query
 
-### Babel 
+## Babel 
 * 其实是一个编译js 的一个平台
 * 让你可以使用 最新的ES7 ES8不用管新标准是否 可以使用，浏览器是否可以支持
 * 让你可以使用基于JS 进行拓展的语言 比如REact 的JSX
@@ -117,7 +118,7 @@
 
 * css 和 图片 都通过合适的loader 都可以处理
 
- ### css
+ ## css
   css-loader 和style -loader ，css-loader使你能够使用类似@import 和 url(...)的方法实现 require()的功能,style-loader将所有的计算后的样式加入页面中，二者组合在一起使你能够把样式表嵌入webpack打包后的JS文件中
 
 ### css module
@@ -308,3 +309,44 @@ module.exports = {
 
 
 ```
+
+
+----
+
+### webpackJsonp
+> 用于从异步加载的文件中安装模块
+
+###  HtmlwebpackPlugin 输出index。html到output
+
+###  CleanWebpackPlugin 每次build 清空output 目录
+
+### MiniCssExtractPlugin 分离单独的css 到 output
+
+### optimization 是webpack4 新增的一个配置选项
+> 主要是处理生产环境的下各类的优化 比如压缩 提取公共代码
+ 以下是分包的配置：
+```
+{
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
+}
+```
+
+
+
+
+##  webpack tapable类中 常用的 钩子函数 
+
+* 
+
+
+------
+
+
+
+
+
+

@@ -457,6 +457,11 @@ if (nextProps.currentRow !== prevState.lastRow) {
 
 ```
 
+
+### 父子组件 更新 刷新页面 
+> 父componentWillMount--->父render()---->子componentWillMount--->子render()--->子componentDidMount--->父componentDidMount
+
+
 总结：
 
 * 在upate之前获取dom节点，getSnapshotBeforeUpdate(prevProps, prevState)代替componentWillUpdate(nextProps, nextState)  ，getSnapshotBeforeUpdate在render之后，但在节点挂载前
