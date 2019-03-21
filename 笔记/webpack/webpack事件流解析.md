@@ -1,4 +1,19 @@
 ## webpack 构建 流程
+> webpack 整体是一个插件的架构，所有的功能都是插件的方式集成在构建流程中，通过发布订阅来触发各个插件的执行，webpack 的核心使用Tapable
+
+### webpack 关键节点对应的事件
+* entry-option 初始化 option
+* run 开始编译
+* make 从entry 开始递归的分析依赖模块进行build
+* before-resolve -after-resolve 对其中的一个模块进行解析
+* build-module 开始构建这个module 这里将使用文件对应的loader加载
+* normal-module-loader 对用loader加载完成的module(是一段js代码)进行编译,用 acorn 编译,生成ast抽象语法树
+* program 开始对ast进行遍历，当遇到require等一些调用表达式时，触发call require事件的handler执行，收集依赖，并。如：AMDRequireDependenciesBlockParserPlugin等
+* seal 所有依赖build完成，下面将开始对chunk进行优化，比如合并,抽取公共模块,加hash
+* emit 把各个chunk输出到结果文件
+
+----
+
 > webpack 准备阶段
 > modules 和chunks 的生成阶段
 > 文件生成 阶段
@@ -90,4 +105,6 @@ modules解析主要包含： 创建实例、loader应用以及依赖手机 chunk
 * webpack的基础架构 是基于一种类似时间的方式，webpack 的大部分功能通过注册任务点的方式来实现。
 * 在我们运行 webpack的时候 会注册 一个Compiler 实例，然后 调用WebpackOptionsApply这个模块给 Compiler添加插件
 * 
+
+
 
