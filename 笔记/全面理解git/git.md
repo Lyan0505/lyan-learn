@@ -101,10 +101,14 @@ MacBook-Pro-9:笔记 xmly$
 
 
 
+
+
+
+
 ## git 的工作区域
 * 工作区 ： 
     这些从 Git 仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
-* Index 暂存区 : 
+* Index 暂存区 : 
     暂存区域是一个文件，保存了下次将提交的文件列表信息，一般在 Git 仓库目录中。 有时候也被称作`‘索引’'，不过一般说法还是叫暂存区域。
 * HEAD （本地仓库）
 
@@ -112,6 +116,57 @@ MacBook-Pro-9:笔记 xmly$
 
 > git add * 把改动提交到 》 缓存区（Index）
 > git commit -m '说明' 命令就把改动提交到了仓库区（当前分支）本地仓库
-### git add [file]
-* 
+### git add [file] 发生了什么
+* 在 .git/object/ 文件夹中添加修改或者新增文件对应的 blob 对象；
+* 在 .git/index 文件夹中写入该文件的名称及对应的 blob 对象名称；
+* 通过命令 git ls-files -s 可以查看所有位于.git/index中的文件
+
+![git 工作区域](/笔记/img/WechatIMG199.png)
+
+其中各项的含义如下：
+  * 100644： 100代表regular file，644代表文件权限
+  * 中间的哈希值 blob对象的名称；
+  * 0 表示当前文件的版本
+  * 后面的是文件的完整路径
+  
+### git status 
+
+* 查看当前所在分支；
+* 列出已经缓存，未缓存，未追踪的文件（依据上文中的三棵树生成）；
+* 给下一步的操作一定的提示；
+
+> .get/HEAD 存储着仓库当前位于的分支  cat .git/HEAD
+
+### git commit 发生了什么
+
+* 新增tree 对象，有多少个修改过的文件夹，就会添加多少个 tree
+* 新增commit对象，其中的tree指向最顶端的tree，此外还包含一些其它的元信息， tree对象中会包含一级目录下的子tree对象及blob对象，由此可构建当前commit的文档快照
+
+> git cat-file -t 查看某对象的类型
+
+> git cat-file -p hash 查看某对象的内容
+
+```
+MacBook-Pro-9:lyan-learn xmly$ git cat-file -t 3942
+commit
+MacBook-Pro-9:lyan-learn xmly$ git cat-file -t bf7b
+tree
+MacBook-Pro-9:lyan-learn xmly$ git cat-file -p 3942
+tree bf7bbedce04c0fd31a9a383303785b16cd593220
+parent 9f761d649b2fc9349f1523ee037ede0919ce577a
+author lyan.lei <lyan.lei@ximalaya.com> 1553592553 +0800
+committer lyan.lei <lyan.lei@ximalaya.com> 1553592553 +0800
+
+修改图片路径
+MacBook-Pro-9:lyan-learn xmly$ git cat-file -p bf7bbedce04c0fd31a9a383303785b16cd593220
+100644 blob b4307a84d87fc4103cb29b99a099b53ad6ff2660	.DS_Store
+100644 blob e54482ba3055538efe8bc644289aab2d49b8b03a	index.html
+040000 tree 6d58575858c86defeae2c0e68b5cec5243ea8aa6	node_modules
+100644 blob df6e18f4798830922e757b2e4c4e5d8cf610514d	package-lock.json
+160000 commit 79fa4a3aa5987e8ffb8f0f36e7da6c0a4afc3e1c	webpack-demos
+040000 tree 2d0790369cb2d4bc0715828b35862cf80e8b9618	"\347\254\224\350\256\260"
+MacBook-Pro-9:lyan-learn xmly$ 
+
+```
+
 
