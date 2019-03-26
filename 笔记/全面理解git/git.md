@@ -121,6 +121,7 @@ MacBook-Pro-9:笔记 xmly$
   ![git 工作流](/笔记/img/WechatIMG200.png)
 
 ### git add [file] 发生了什么
+
 * 在 .git/object/ 文件夹中添加修改或者新增文件对应的 blob 对象；
 * 在 .git/index 文件夹中写入该文件的名称及对应的 blob 对象名称；
 * 通过命令 git ls-files -s 可以查看所有位于.git/index中的文件
@@ -128,11 +129,14 @@ MacBook-Pro-9:笔记 xmly$
 ![git](/笔记/img/WechatIMG199.jpeg)
 
 其中各项的含义如下：
-  * 100644： 100代表regular file，644代表文件权限
-  * 中间的哈希值 blob对象的名称；
-  * 0 表示当前文件的版本
-  * 后面的是文件的完整路径
+  * 100644： 100代表regular file，644代表文件权限;
+  * 中间的哈希值 blob对象的名称;
+  * 0 表示当前文件的版本;
+  * 后面的是文件的完整路径;
+  * 
   
+
+
 ### git status 
 
 * 查看当前所在分支；
