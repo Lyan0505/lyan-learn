@@ -53,7 +53,11 @@
 
 ```
 
+> find .git/objects -type f
+
+
 ### git 存储
+
 > git 存储了Blobs，tree,commit ,Tag ,References 五种对象，这些对象存储在/objects和/refs 中
 >这些对象的名称是一段40位的哈希值，此名称由其内容依据sha-1算法生成，具体到.git/object文件夹下，会取该hash值的前 2 位为子文件夹名称，剩余 38 位为文件名，这四类对象都是二进制文件，其内容格式依据类型有所不同。
 
@@ -116,6 +120,9 @@ MacBook-Pro-9:笔记 xmly$
 
 > git add * 把改动提交到 》 缓存区（Index）
 > git commit -m '说明' 命令就把改动提交到了仓库区（当前分支）本地仓库
+
+![git 工作流](/笔记/img/WechatIMG200.png)
+
 ### git add [file] 发生了什么
 * 在 .git/object/ 文件夹中添加修改或者新增文件对应的 blob 对象；
 * 在 .git/index 文件夹中写入该文件的名称及对应的 blob 对象名称；
