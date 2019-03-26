@@ -104,7 +104,67 @@ modules解析主要包含： 创建实例、loader应用以及依赖手机 chunk
 ###  webpack 基本框架
 * webpack的基础架构 是基于一种类似时间的方式，webpack 的大部分功能通过注册任务点的方式来实现。
 * 在我们运行 webpack的时候 会注册 一个Compiler 实例，然后 调用WebpackOptionsApply这个模块给 Compiler添加插件
-* 
+
+
+---- 
+
+###  hansh 和 chunkhash 的问题
+
+* 如果使用hansh 对js css 签名每次都不一样，这样导致无法利用缓存，
+
+* hansh 在js 和css 中不实用，所以在项目中所有的文件都准备了
+chunkhansh ，但是img 和font等资源中使用了chunkhash 会报错：因为chunkhash 只适用js 和css img 中没有这种东西，仍然需要hash
+
+* 打包时发现，js和js引入的css的 chunkhash 是相同的，导致无法区分css和js的更新，如下
+
+> webpack 把css 当成js 的一部分，所以计算chunkhash 是混合在一起计算的，解决的办法： css是使用 ExtractTextPlugin 插件引入的，这时候可以使用到这个插件提供的 contenthash，
+
+
+```
+  new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'static/css/[name].[contenthash:8].css',
+      chunkFilename: 'static/css/[name].[contenthash:8].chunk.css'
+    }),
+```
+
+
+* 在webpack 中配置 CommonsChunkPlugin 时需要注意
+    
+    *  配置webpack的output项时,filename 和 chunkFilename 必要使用chunkhash 不要使用hash，否则
+    * 对于抽取的css样式文件，需要使用contenthash, 与file-loader中的hash意义相同。此处不能为chunkhash，否则其与抽取该样式文件的entry chunk的chunkhash保持一致，打不到缓存的目的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
