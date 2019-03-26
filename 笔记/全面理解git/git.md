@@ -118,14 +118,14 @@ MacBook-Pro-9:笔记 xmly$
 > git add * 把改动提交到 》 缓存区（Index）
 > git commit -m '说明' 命令就把改动提交到了仓库区（当前分支）本地仓库
 
-![git 工作流](/笔记/img/WechatIMG200.png)
+  ![git 工作流](/笔记/img/WechatIMG200.png)
 
 ### git add [file] 发生了什么
 * 在 .git/object/ 文件夹中添加修改或者新增文件对应的 blob 对象；
 * 在 .git/index 文件夹中写入该文件的名称及对应的 blob 对象名称；
 * 通过命令 git ls-files -s 可以查看所有位于.git/index中的文件
 
-![git 工作区域](/笔记/img/WechatIMG199.png)
+![git](/笔记/img/WechatIMG199.jpeg)
 
 其中各项的含义如下：
   * 100644： 100代表regular file，644代表文件权限
