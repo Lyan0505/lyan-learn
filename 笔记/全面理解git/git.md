@@ -21,6 +21,7 @@
 
 
 ## git 工作原理
+
 ### .git
 * 找一个空的文件夹git init 会有一个隐藏的文件夹 .git
 * mkdir gitDemo && cd gitDemo && git init && tree -a
@@ -104,12 +105,8 @@ MacBook-Pro-9:笔记 xmly$
 
 
 
-
-
-
-
-
 ## git 的工作区域
+
 * 工作区 ： 
     这些从 Git 仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
 * Index 暂存区 : 
