@@ -102,7 +102,38 @@ MacBook-Pro-9:笔记 xmly$
 * git commit message
 
 
+#### References
+* References 存储在 git/refs/文件下
 
+```
+.git/refs
+├── heads
+│   ├── master
+│   ├── 你的分支
+│   └── ...
+├── remotes
+│   ├── origin
+│   │   ├── ANDROIDBUG-4845
+│   │   ├── ActivityCard-za
+│   │   ├── ...
+├── stash
+└── tags
+
+
+```
+* headers 文件中的每一个文件 都对应着一个本地的分支
+
+```
+➜ cat .git/refs/heads/master
+603bdb03d7134bbcaf3f84b21c9dbe902cce0e79
+```
+> 这个其实就是一个 指向当前分支最新的commit 的指针
+
+* .git/refs/remotes 记录着远程仓库分支的本地映射
+
+* .git/refs/stash 与 git stash 命令相关
+
+* .git/refs/tag, 轻量级的tag，与 git tag 命令相关，这时候 指向某一个commit
 
 
 ## git 的工作区域
@@ -133,7 +164,6 @@ MacBook-Pro-9:笔记 xmly$
   * 中间的哈希值 blob对象的名称;
   * 0 表示当前文件的版本;
   * 后面的是文件的完整路径;
-  * 
   
 
 
@@ -176,5 +206,69 @@ MacBook-Pro-9:lyan-learn xmly$ git cat-file -p bf7bbedce04c0fd31a9a383303785b16c
 MacBook-Pro-9:lyan-learn xmly$ 
 
 ```
+
+
+### git branch 
+* 前面在介绍 .git/refs/heads 的时候分支的本质就是 一个指向提交对象的 可变的指针
+* 创建一个分支，相当于往一个文件中写入41字节（40个字符一个换行符）
+* 本地分支 和远程分支，跟踪远程分支的本地分支，本地分支 gitpull git 自动识别去远程仓库的那个分支拉取代码
+* .git/refs/remotes 存储 远程分支，也可以说是一个本地的备份
+
+> cat .git/config
+
+```
+MacBook-Pro-9:lyan-learn xmly$ cat .git/config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/Lyan0505/lyan-learn.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+
+```
+
+
+#### git checkout 
+
+* git checkout  实际操作的是 HEAD，.git/HEAD 指向本地仓库当前操作的分支，实际也是直接或者间接的指向了某个commit 对象
+* git checkout <file> ==>  可以看做是 git checkout HEAD <file> 的缩写 ，这个操作是 可以清楚没有添加到缓存的更改，但是不会影响已经缓存的更改，原因在于其实缓存过的文件已经是另外的一个文件了
+* git checkout <branch> ,切换分支，刚刚提到了 .git/HEAD 中的内容，更新工作区域内容为 切换的分支的 所指向的 commit 对象的内容
+
+#### git merge
+> Git 分支合并： 快度向前合并 和三路合并
+
+* 快速向前合并
+> 我们会遇到，怕污染主分支的代码，在主分支上拉取新的分支修改，在主分支没有修改的前提下，这样肯定不会又冲突，直接合并就行了。相当于修改 .refs/heads 下主分支内容指向的最新commit 对象
+![快度向前合并](/笔记/img/1226129-0fcb16bd7f842832.png)
+
+* 三路合并 （假如我们的分支是test）
+> 
+
+![三路合并](/笔记/img/WechatIMG202.png)
+
+
+* 如何解决冲突
+> * 决定不合并。这时，唯一要做的就是重置index到HEAD节点。git merge --abort用于这种情况。
+  * 解决冲突。Git会标记冲突的地方，解决完冲突的地方后使用git add加入到index中，然后使用git commit产生合并节点。
+  * 你可以用以下工具来解决冲突:
+  使用合并工具。git mergetool将会调用一个可视化的合并工具来处理冲突合并。
+  * 查看差异。git diff将会显示三路差异（三路合并中所采用的三路比较算法）。
+  * 查看每个分支的差异。git log --merge -p <path>将会显示HEAD版本和MERGE_HEAD版本的差异。
+  * 查看合并前的版本。git show :1:文件名显示共同祖先的版本，git show :2:文件名显示当前分支的HEAD版本，git show :3:文件名显示对方分支的MERGE_HEAD版本。
+
+
+
+
+
+
+
+> 参考 https://www.jianshu.com/p/9f993e50caa0
 
 
