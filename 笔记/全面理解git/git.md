@@ -63,11 +63,18 @@
 >这些对象的名称是一段40位的哈希值，此名称由其内容依据sha-1算法生成，具体到.git/object文件夹下，会取该hash值的前 2 位为子文件夹名称，剩余 38 位为文件名，这四类对象都是二进制文件，其内容格式依据类型有所不同。
 
 
-* Blobs : 一个blobs 对象是一堆字节，通常是一个文件二进制的标识
-* tree，有点类似于目录，其内容由对其它tree及blobs的指向构成；
+* Blobs : 一个blobs 对象是一堆字节，通常是一个文件二进制的标识，保存的是文件的内容
+* tree，有点类似于目录，像是操作系统中的文件夹，其内容由对其它tree及blobs的指向构成；
 * commit，指向一个树对象，并包含一些表明作者及父 commit 的元数据
 * Tag，指向一个commit对象，并包含一些元数据
 * References,指向一个commit或者tag对象
+
+> 当我们 对文件进行修改的时候，变化的文件 会生成一个 Blob 对象，记录这个版本文件的全部的内容，然后针对该文件有一个唯一的 SHA-1的校验和。针对没有变化的文件就拷贝上一个版本的指针，而不会生成一个全新的Blob 对象
+
+>每次提交可能不仅仅只有一个tree 对象，指明了项目的不同的快照，但是必须记住所有的对象SHA-1校验和才能获得完整的快照。
+
+>commit 对象的格式指明了改时间点 项目快照顶层的快照tree 对象 作者提交信息
+
 
 #### Blobs 
 * 我们都知道 git add 会把已经修改的文件 添加的缓存区，因为每次修改后的文件都是一个新的文件。每次add 一个文件都会添加一个Blobs 对象
@@ -229,6 +236,10 @@ MacBook-Pro-9:lyan-learn xmly$ cat .git/config
 	url = https://github.com/Lyan0505/lyan-learn.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
+
+
+
+
 	remote = origin
 	merge = refs/heads/master
 
@@ -262,6 +273,13 @@ MacBook-Pro-9:lyan-learn xmly$ cat .git/config
   * 查看差异。git diff将会显示三路差异（三路合并中所采用的三路比较算法）。
   * 查看每个分支的差异。git log --merge -p <path>将会显示HEAD版本和MERGE_HEAD版本的差异。
   * 查看合并前的版本。git show :1:文件名显示共同祖先的版本，git show :2:文件名显示当前分支的HEAD版本，git show :3:文件名显示对方分支的MERGE_HEAD版本。
+
+
+#### git reset
+  * git reset <file> 重缓存区移出特定的文件，但是不会改变工作区 的内容
+  * git reset 重设缓存区，会取消所有文件的缓存
+  * git reset --hard 重置缓存区和工作区，修改其内容对应最新的一次commit 对应的内容
+  * git reset <commit> 移动当前分支的末端到指定的 commit 处 
 
 
 
