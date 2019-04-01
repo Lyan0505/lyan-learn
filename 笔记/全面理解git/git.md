@@ -277,9 +277,95 @@ MacBook-Pro-9:lyan-learn xmly$ cat .git/config
 
 #### git reset
   * git reset <file> 重缓存区移出特定的文件，但是不会改变工作区 的内容
-  * git reset 重设缓存区，会取消所有文件的缓存
+
+  * git reset 重设缓存区，会取消所有文件的缓存 (工作区修改的文件不会还原)
+
   * git reset --hard 重置缓存区和工作区，修改其内容对应最新的一次commit 对应的内容
+  ```
+  MacBook-Pro-9:lyan-learn xmly$ git reset --hard
+   HEAD is now at ec66ae7 update
+  ```
+  * git reset --hard <commit>: 重置缓存区和工作区，修改其内容为指定 commit 对应的内容
   * git reset <commit> 移动当前分支的末端到指定的 commit 处 
+
+
+  - reset 发生了什么？
+
+  > 移动HEAD 所指向的分支指向的commit ，比如：你在master分支上工作，执行git reset 6789002（假如这是commit 对象的SHA-1哈希值）
+  这时候master 当前指向的commit 改为6789002 的commit对象。git commit 会创建一个新的commit ，git reset 会修改HEAD 所指向的，也就是把分支的指向改成原来的指向，过程不会修改INdex 和工作目录 （reset 的本质撤销上一次的commit 命令）
+
+ > git reset --hard 会恢复工作区上次commit 的快照 ，也就是清空工作区所做的更改
+
+ > 如果说reset 后面指定路径 git reset file.txt 其实是 git reset --mixed HEAD file.txt 的简写形式 ,会将作用范围限定在指定的文件和文件夹，此时分支指向不会移动，不过索引和工作目录的内容则是可以完成局部的更改的
+
+ 
+
+#### git stash
+
+* 保存当前分支的工作状态，便于再次切换回到本分支恢复
+
+> 使用场景： 假如你在test 上修改，但是你有紧急的bug 需要切换到别的分支修改，可以先git stash ,最后返回test 执行git stash list 查看所有的 list  执行 git stash apply，恢复最新的stash到工作区;
+
+```
+MacBook-Pro-9:lyan-learn xmly$ git stash save 'test-git'
+Saved working directory and index state On master: test-git
+MacBook-Pro-9:lyan-learn xmly$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+MacBook-Pro-9:lyan-learn xmly$ git stash list
+stash@{0}: On master: test-git
+MacBook-Pro-9:lyan-learn xmly$ 
+
+```
+
+```
+MacBook-Pro-9:lyan-learn xmly$ git stash pop
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   "\347\254\224\350\256\260/\345\205\250\351\235\242\347\220\206\350\247\243git/git.md"
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (721e2f4eb9ea605d08f8c5e7df7d839a35904700)
+
+```
+
+* git stash pop 将缓存中的 第一个stash 删除，并将对应的修改应用到当前的工作区，
+
+* git stash apply ,将缓存堆栈中的stash 多次应用到工作目录中，但是不会删除 stash 拷贝
+
+ > 原理： 执行git stash 实际上 我们依据工作区，缓存区，以及HEAD 这三颗文件数 ，分别生成commit 
+，以这三个commit 对象 生成的新的commit 对象，代表此次stash ，并把 这个commit 存到.git/refs/stash
+
+
+ ```
+ MacBook-Pro-9:lyan-learn xmly$ git stash list
+stash@{0}: On master: test
+MacBook-Pro-9:lyan-learn xmly$ cat .git/refs/stash
+e607a1a61fe7e059e5501e920ff02c365d62bc20
+MacBook-Pro-9:lyan-learn xmly$ git cat-file -p e607
+tree 35633ee997617f747c06aa91eb040d613e663175
+parent ec66ae750aceabe6b1591442941a29f50509a8cd
+parent bce7ee4e66e7088c2a687832ebdd798a9dacbb4a
+author lyan.lei <lyan.lei@ximalaya.com> 1554103269 +0800
+committer lyan.lei <lyan.lei@ximalaya.com> 1554103269 +0800
+
+On master: test
+MacBook-Pro-9:lyan-learn xmly$ 
+
+ ```
+
+
+
+
 
 
 
