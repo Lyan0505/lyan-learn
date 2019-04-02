@@ -105,7 +105,7 @@ MacBook-Pro-9:笔记 xmly$
 
 
 
-## git 的工作区域
+## git 的工作区域 testtest
 * 工作区 ： 
     这些从 Git 仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
 * Index 暂存区 : 
