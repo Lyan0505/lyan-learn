@@ -18,9 +18,23 @@
 
 ### ES7
 * ES7在ES6的基础上添加了三项内容：求幂运算符（**）、Array.prototype.includes()方法、函数作用域中严格模式的变更。
-*  3**2  效果等同于 Math.pow(3,2)
+* includes() 作用，是查找一个值在不在数字，若在返回true 否则 返回false
+* includes() 可以接受2个参数，要搜索的值和搜索的开始索引
+>  和ES6 里面的indexOf()
+* 简便性： 如果是判断某个元素是否在数组里面，然后includes() 就行了，如果要额外的判断数组中的下标就要用到indexOf() 判断
+* 精确性： 两者都是=== 操作来做的比较，
 
-### ES8 Async function(异步函数)
+```
+let demo = [1, NaN, 2, 3]
+demo.indexOf(NaN) //-1
+demo.includes(NaN) //true
+
+```
+* 3**2  效果等同于 Math.pow(3,2)
+
+
+### ES8 
+#### Async function(异步函数)
 
 ```
 变体
@@ -32,6 +46,31 @@
 箭头函数： const foo = async () => {}
 ```
 
+#### Object.entries()和Object.values()
+* Object.entries() 这些数组最终放到一个数组中，返回一个二维数组,如果目标是数组的时候，则将会将数组的下标作为键值对返回
+* Object.values() 只返回自己键值对中属性值，返回的数组顺序和 Object.entries() 保持一致
+
+#### 字符串填充：padStart 和 PadEnd
+* padStart 函数通过填充字符串的首部来保证字符串要达到的固定的长度，反之，padEnd 是字符串尾部来保证字符串的长度，该方法提供了两个参数：
+字符串目标长度和填充的字段，其中第二个参数 可以不填，默认的就是使用空格
+
+
+#### Object.getOwnPropertyDescriptors()
+* 返回目标对象中所有属性的描述符，该属性必须是自己定义的不能是从原型链集成过来的，
+* 返回的结果键可能有的值 有： configurable、enumerable、value、writable、get、set。
+
+
+> Object的defineProperty和defineProperties这两个方法在js中的重要性十分重要，用来定义或者修改内部的属性，与之相对应的getOwnPropertyDescriptor和getOwnPropertyDescriptors就是获取这行内部属性的描述
+
+
+#### ES7 Decorators 装饰器
+* 在不改变原来的基础上，进行包装拓展
+* 实现的原理：
+* 依赖ES5的Object.defineProperty() 会对一个对象，Object.defineProperty(obj, prop, descriptor)；
+
+----
+
+
 
 
 ### 箭头函数 和 普通函数  以及this
@@ -42,7 +81,6 @@
  箭头函数 内部其实没有this ，它会捕获上下文的this 作为自己的this；
  函数体内的this 对象 就是定义是所在的对象，而不是使用是所在的对象；
  this指向的固定化，并不是因为箭头函数内部有绑定this的机制，实际原因是箭头函数根本没有自己的this，导致内部的this就是外层代码块的this。正是因为它没有this，所以也就不能用作构造函数；
-
 
 * ES5规范中，this 对象指向是可变的，但是ES6 的箭头函数 中，this 是固定的
 
@@ -57,8 +95,6 @@
  <button onClick={this.handleClick.bind(this)}>
     Click me
   </button>
-
-
 ```
 
 ```
