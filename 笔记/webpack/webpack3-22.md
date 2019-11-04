@@ -57,7 +57,7 @@
 * 模块化 - 可以让我们把复杂的代码程序细化为小的文件
 * scss less 等预处理器
 
-## webpac 和Grunt 以及Gulp 相比的特性
+## webpack 和Grunt 以及Gulp 相比的特性
 * Gulp 和Grunt 是一种能够优化前端开发流程的工具，而Webpack 是一种模块化的解决方案
 
 * Webpack的工作方式是：把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个（或多个）浏览器可识别的JavaScript文件。
@@ -77,10 +77,19 @@
 >  devtool: 'eval-source-map' 
 *  有四种不同的配置，各有优点，具体参考文档，自己选择就行
 
-## 自动监控，自动编译，自动刷新浏览器
+##  webpack 热更新 webpack-dev-sever
+
 > npm install --save-dev webpack-dev-server
 
 * webpack 提供一个可选的本地服务，本地的服务是基于node 构建
+ ### 热更新原理：
+ * 本地编辑代码进行修改， Webpack Compiler 将Js 编译成Bundle，进行打包，
+ * 打包好之后，HMR Sever将更新的文件输出给 HMR RunTime
+ * Bundle Sever:提供文件在浏览器中访问
+ * HRM Sever : 被注入到浏览器中
+
+
+
 
 ## 方便打包的命令
 
@@ -96,6 +105,8 @@
 
 
 
+
+
 ## Loaders
 
 * Loader 是很重要的一个部分
@@ -104,6 +115,33 @@
 * Loader 需要在webpack.congig.js 中的 modules 的关键字进行配置
 
 > test, loader, include/exclude,query
+
+### 解析css： css-loader, style-loader
+ * css-loader 用来加载.css 文件，并且转换成commonJs 对象
+ * style-loader 将样式通过style 标签插入到 head 中
+ * loader 调用是链式调用，从右向左，所以 先调用 css-loader 解析css,然后将解析好的css传递给style-loader .
+
+ ```
+ rules:[
+     {
+         test:/.css$/,
+         use:['style-loader','css-loader']
+     }
+ ]
+ ```
+ ### 解析less： 在前面的基础之上 增加一个 less-loader
+  ```
+ rules:[
+     {
+         test:/.css$/,
+         use:['style-loader','css-loader','less-loader']
+     }
+ ]
+ ```
+
+ ### 解析字体图片 ：file-loader
+
+
 
 ## Babel 
 * 其实是一个编译js 的一个平台
@@ -118,7 +156,7 @@
 
 * css 和 图片 都通过合适的loader 都可以处理
 
- ## css
+## css
   css-loader 和style -loader ，css-loader使你能够使用类似@import 和 url(...)的方法实现 require()的功能,style-loader将所有的计算后的样式加入页面中，二者组合在一起使你能够把样式表嵌入webpack打包后的JS文件中
 
 ### css module
