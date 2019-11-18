@@ -28,7 +28,6 @@ console.log(utils.get(2))
 
 ```
 
-
 ### exports 
 * 为了方便 Node 为每个模块提供一个exports 变量，指向module.exports 
 
@@ -96,11 +95,11 @@ import utils from './utils' // 导入默认值
 console.log(utils) // 123456
 ————————————————
 
-
 ```
 
 
 ```
+
 import { foo, bar } from ‘./utils’ // 导入多个导出
 import * as utils from ‘utils’ // 作为命名空间导入整个模块
 import utils from ‘utils’ // 导入默认值
